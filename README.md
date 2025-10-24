@@ -6,3 +6,7 @@ Simple project for practicing implementation of GOAP(Goal Oriented Action Planni
 https://www.diva-portal.org/smash/get/diva2:1972169/FULLTEXT01.pdf
 
 https://raw.githubusercontent.com/jordantommartin/jordantommartin.github.io/main/docs/GoalOrientedActionPlanningAI.pdf
+
+https://scholar.google.com/citations?user=6jeMM0sAAAAJ&hl=en
+
+https://web.stanford.edu/class/cs123/materials.html
