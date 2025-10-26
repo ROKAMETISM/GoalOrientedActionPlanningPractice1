@@ -10,3 +10,5 @@ https://raw.githubusercontent.com/jordantommartin/jordantommartin.github.io/main
 https://scholar.google.com/citations?user=6jeMM0sAAAAJ&hl=en
 
 https://web.stanford.edu/class/cs123/materials.html
+
+https://github.com/cvra/goap-cpp
