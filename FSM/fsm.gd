@@ -20,11 +20,11 @@ func _process(delta: float) -> void:
 		var state_change_data = current_state_element.process_frame(delta)
 		change_state(state_change_data)
 
-func init(parent:CharacterBody3D, move_controller:MoveController) -> void:
+func init(parent:Node, controllers:Array[Controller]) -> void:
 	for child : State in get_children():
 		child.parent = parent
 		child.fsm = self
-		child.move_controller = move_controller
+		child.controllers = controllers
 	var state_transition_array := []
 	for starting_state_element in starting_states:
 		state_transition_array.append(Transition.new(starting_state_element, Transition.Type.Enter))

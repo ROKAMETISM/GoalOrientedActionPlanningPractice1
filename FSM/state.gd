@@ -2,8 +2,9 @@ class_name State
 extends Node
 # Hold a reference to the parent so that it can be controlled by the state
 @export var state_log := false
-var parent:CharacterBody3D
+var parent:Node
 var fsm:FSM
+var controllers:Array[Controller]
 func enter() -> void:
 	if state_log:
 		print("++entered : " + get_state_name())

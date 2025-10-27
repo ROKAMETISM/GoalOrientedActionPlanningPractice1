@@ -1,11 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://cw85fxnssrgap"]
+[gd_scene load_steps=7 format=3 uid="uid://cw85fxnssrgap"]
 
 [ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
+[ext_resource type="Script" uid="uid://dkicb0t4qrgwv" path="res://Entities/TestEntity/test_entity.gd" id="1_vwajm"]
+[ext_resource type="Script" uid="uid://cuks3g8yoq68l" path="res://FSM/fsm.gd" id="2_0qq3k"]
+[ext_resource type="Script" uid="uid://ciyg1i7u2tt8o" path="res://Entities/TestEntity/States/test_entity_idle.gd" id="2_gd663"]
+[ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/States/test_entity_move.gd" id="3_4nsly"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
 
 [node name="TestEntity" type="CharacterBody2D"]
 motion_mode = 1
+script = ExtResource("1_vwajm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_0qq3k")
@@ -13,3 +18,17 @@ shape = SubResource("CircleShape2D_0qq3k")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("1_gw6qf")
+
+[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("starting_states")]
+script = ExtResource("2_0qq3k")
+starting_states = [NodePath("TestEntityIDLE")]
+metadata/_custom_type_script = "uid://cuks3g8yoq68l"
+
+[node name="TestEntityIDLE" type="Node" parent="FSM" node_paths=PackedStringArray("move_state")]
+script = ExtResource("2_gd663")
+move_state = NodePath("../TestEntityMove")
+metadata/_custom_type_script = "uid://ciyg1i7u2tt8o"
+
+[node name="TestEntityMove" type="Node" parent="FSM"]
+script = ExtResource("3_4nsly")
+metadata/_custom_type_script = "uid://dej5lex55tui1"
