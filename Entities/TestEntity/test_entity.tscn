@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://cw85fxnssrgap"]
+
+[ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
+
+[node name="TestEntity" type="CharacterBody2D"]
+motion_mode = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0qq3k")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(4, 4)
+sprite_frames = ExtResource("1_gw6qf")

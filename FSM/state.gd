@@ -19,11 +19,11 @@ func process_frame(_delta: float) -> Array:
 func process_physics(_delta: float) -> Array:
 	return []
 func get_current_states()->Array[State]:
-	return fsm.current_states
+	return fsm._current_states
 func is_active()->bool:
-	return fsm.current_states.has(self)
+	return fsm._current_states.has(self)
 func is_state_active(state:State)->bool:
-	return fsm.current_states.has(state)
+	return fsm._current_states.has(state)
 func get_state_name()->String:
 	return "BaseStateName"
 func _exit_transition(output:Array, exit_state:State)->void:
