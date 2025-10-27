@@ -4,7 +4,6 @@ class_name TestEntityIDLE extends State
 
 func enter() -> void:
 	super()
-	print("Hello!")
 
 func process_physics(_delta: float) -> Array[Transition]:
 	var _output:Array[Transition]

@@ -12,3 +12,5 @@ https://scholar.google.com/citations?user=6jeMM0sAAAAJ&hl=en
 https://web.stanford.edu/class/cs123/materials.html
 
 https://github.com/cvra/goap-cpp
+
+https://docs.godotengine.org/en/stable/tutorials/navigation/navigation_introduction_2d.html

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cw85fxnssrgap"]
+[gd_scene load_steps=8 format=3 uid="uid://cw85fxnssrgap"]
 
 [ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
 [ext_resource type="Script" uid="uid://dkicb0t4qrgwv" path="res://Entities/TestEntity/test_entity.gd" id="1_vwajm"]
 [ext_resource type="Script" uid="uid://cuks3g8yoq68l" path="res://FSM/fsm.gd" id="2_0qq3k"]
-[ext_resource type="Script" uid="uid://ciyg1i7u2tt8o" path="res://Entities/TestEntity/States/test_entity_idle.gd" id="2_gd663"]
-[ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/States/test_entity_move.gd" id="3_4nsly"]
+[ext_resource type="Script" uid="uid://ciyg1i7u2tt8o" path="res://Entities/TestEntity/Controller/test_entity_idle.gd" id="2_gd663"]
+[ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/Controller/test_entity_move.gd" id="3_4nsly"]
+[ext_resource type="Script" uid="uid://bcycbct07epaw" path="res://Entities/TestEntity/Controller/test_entity_move_controller.gd" id="3_esaxb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
 
@@ -19,16 +20,24 @@ shape = SubResource("CircleShape2D_0qq3k")
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("1_gw6qf")
 
-[node name="FSM" type="Node" parent="." node_paths=PackedStringArray("starting_states")]
+[node name="Controller" type="Node" parent="."]
+
+[node name="TestEntityMovecontroller" type="Node" parent="Controller"]
+unique_name_in_owner = true
+script = ExtResource("3_esaxb")
+metadata/_custom_type_script = "uid://bcycbct07epaw"
+
+[node name="MoveFSM" type="Node" parent="Controller" node_paths=PackedStringArray("starting_states")]
+unique_name_in_owner = true
 script = ExtResource("2_0qq3k")
 starting_states = [NodePath("TestEntityIDLE")]
 metadata/_custom_type_script = "uid://cuks3g8yoq68l"
 
-[node name="TestEntityIDLE" type="Node" parent="FSM" node_paths=PackedStringArray("move_state")]
+[node name="TestEntityIDLE" type="Node" parent="Controller/MoveFSM" node_paths=PackedStringArray("move_state")]
 script = ExtResource("2_gd663")
 move_state = NodePath("../TestEntityMove")
 metadata/_custom_type_script = "uid://ciyg1i7u2tt8o"
 
-[node name="TestEntityMove" type="Node" parent="FSM"]
+[node name="TestEntityMove" type="Node" parent="Controller/MoveFSM"]
 script = ExtResource("3_4nsly")
 metadata/_custom_type_script = "uid://dej5lex55tui1"
