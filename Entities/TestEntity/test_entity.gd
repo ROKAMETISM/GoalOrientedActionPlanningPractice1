@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@onready var move_fsm : FSM = %MoveFSM
+@onready var move_fsm : FSM = %FSM
 @onready var move_controller : TestEntityMovecontroller = %TestEntityMovecontroller
 
 func _ready()->void:

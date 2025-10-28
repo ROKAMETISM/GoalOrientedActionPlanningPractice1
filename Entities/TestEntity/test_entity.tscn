@@ -27,17 +27,17 @@ unique_name_in_owner = true
 script = ExtResource("3_esaxb")
 metadata/_custom_type_script = "uid://bcycbct07epaw"
 
-[node name="MoveFSM" type="Node" parent="Controller" node_paths=PackedStringArray("starting_states")]
+[node name="FSM" type="Node" parent="Controller" node_paths=PackedStringArray("starting_states")]
 unique_name_in_owner = true
 script = ExtResource("2_0qq3k")
 starting_states = [NodePath("TestEntityIDLE")]
 metadata/_custom_type_script = "uid://cuks3g8yoq68l"
 
-[node name="TestEntityIDLE" type="Node" parent="Controller/MoveFSM" node_paths=PackedStringArray("move_state")]
+[node name="TestEntityIDLE" type="Node" parent="Controller/FSM" node_paths=PackedStringArray("move_state")]
 script = ExtResource("2_gd663")
 move_state = NodePath("../TestEntityMove")
 metadata/_custom_type_script = "uid://ciyg1i7u2tt8o"
 
-[node name="TestEntityMove" type="Node" parent="Controller/MoveFSM"]
+[node name="TestEntityMove" type="Node" parent="Controller/FSM"]
 script = ExtResource("3_4nsly")
 metadata/_custom_type_script = "uid://dej5lex55tui1"
