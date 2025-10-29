@@ -1,3 +1,3 @@
 class_name GOAPPlanner extends Node
-func get_plan()->Array[Action]:
+static func get_plan(_current_goal, blackboard)->Array[Action]:
 	return []
