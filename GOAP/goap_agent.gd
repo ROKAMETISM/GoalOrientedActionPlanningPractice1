@@ -2,33 +2,41 @@ class_name GOAPAgent
 extends Node
 var _goals : Array[Goal]
 var _actions : Array[Action]
+var _world_state := WorldState.new()
+var _planner := GOAPPlanner.new()
 var _current_goal : Goal
 var _current_plan : Array[Action]
 var _current_plan_step = 0
 
 var _actor
 
+func _init() -> void:
+	_planner.set_actions(_actions)
+	add_child(_world_state)
+	add_child(_planner)
 
 func _physics_process(delta):
 	var goal = _get_best_goal()
+	if not goal:
+		return
 	if _current_goal == null or goal != _current_goal:
 	# You can set in the blackboard any relevant information you want to use
 	# when calculating action costs and status. I'm not sure here is the best
 	# place to leave it, but I kept here to keep things simple.
 		var blackboard = {
-			"position": _actor.position,
+			#"position": _actor.position,
 			}
 
-		for s in WorldState._state:
-			blackboard[s] = WorldState._state[s]
+		for s in _world_state._state:
+			blackboard[s] = _world_state._state[s]
 		_current_goal = goal
 		_current_plan = GOAPPlanner.new().get_plan(_current_goal, blackboard)
 		_current_plan_step = 0
 	else:
 		_follow_plan(_current_plan, delta)
+	
 
-
-func init(actor, goals: Array):
+func init(actor, goals: Array[Goal]):
 	_actor = actor
 	_goals = goals
 
@@ -56,7 +64,6 @@ func _get_best_goal():
 func _follow_plan(plan, delta):
 	if plan.size() == 0:
 		return
-
 	var is_step_complete = plan[_current_plan_step].perform(_actor, delta)
 	if is_step_complete and _current_plan_step < plan.size() - 1:
 		_current_plan_step += 1

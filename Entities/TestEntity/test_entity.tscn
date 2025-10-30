@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://cw85fxnssrgap"]
+[gd_scene load_steps=9 format=3 uid="uid://cw85fxnssrgap"]
 
 [ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
 [ext_resource type="Script" uid="uid://dkicb0t4qrgwv" path="res://Entities/TestEntity/test_entity.gd" id="1_vwajm"]
 [ext_resource type="Script" uid="uid://cuks3g8yoq68l" path="res://FSM/fsm.gd" id="2_0qq3k"]
-[ext_resource type="Script" uid="uid://ciyg1i7u2tt8o" path="res://Entities/TestEntity/Controller/test_entity_idle.gd" id="2_gd663"]
-[ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/Controller/test_entity_move.gd" id="3_4nsly"]
-[ext_resource type="Script" uid="uid://bcycbct07epaw" path="res://Entities/TestEntity/Controller/test_entity_move_controller.gd" id="3_esaxb"]
+[ext_resource type="Script" uid="uid://ciyg1i7u2tt8o" path="res://Entities/TestEntity/States/test_entity_idle.gd" id="2_gd663"]
+[ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/States/test_entity_move.gd" id="3_4nsly"]
+[ext_resource type="Script" uid="uid://bcycbct07epaw" path="res://Entities/TestEntity/States/test_entity_move_controller.gd" id="3_esaxb"]
+[ext_resource type="Script" uid="uid://d35mg00bfewvp" path="res://GOAP/goap_agent.gd" id="4_liuuo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
 
@@ -26,6 +27,11 @@ sprite_frames = ExtResource("1_gw6qf")
 unique_name_in_owner = true
 script = ExtResource("3_esaxb")
 metadata/_custom_type_script = "uid://bcycbct07epaw"
+
+[node name="GOAPAgent" type="Node" parent="Controller/TestEntityMovecontroller"]
+unique_name_in_owner = true
+script = ExtResource("4_liuuo")
+metadata/_custom_type_script = "uid://d35mg00bfewvp"
 
 [node name="FSM" type="Node" parent="Controller" node_paths=PackedStringArray("starting_states")]
 unique_name_in_owner = true

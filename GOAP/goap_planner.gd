@@ -1,22 +1,17 @@
 class_name GOAPPlanner extends Node
 
 var _actions: Array
-
-
 #
 # set actions available for planning.
 # this can be changed in runtime for more dynamic options.
 #
 func set_actions(actions: Array):
 	_actions = actions
-
-
 #
 # Receives a Goal and an optional blackboard.
 # Returns a list of actions to be executed.
 #
-func get_plan(goal: Goal, blackboard = {}) -> Array:
-	print("Goal: %s" % goal.get_clazz())
+func get_plan(goal: Goal, blackboard = {}) -> Array[Action]:
 	var desired_state = goal.get_desired_state().duplicate()
 
 	if desired_state.is_empty():

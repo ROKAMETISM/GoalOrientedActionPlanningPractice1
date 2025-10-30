@@ -1,10 +1,13 @@
-class_name Goal extends Node
+class_name SleepGoal extends Goal
 
 func is_valid() -> bool:
 	return true
 
+
 func priority() -> int:
-	return 1
+	return 0
+
 
 func get_desired_state() -> Dictionary:
-	return {}
+	return {
+	}
