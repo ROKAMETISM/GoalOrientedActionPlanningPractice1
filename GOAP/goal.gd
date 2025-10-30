@@ -1,5 +1,7 @@
 class_name Goal extends Node
 
+func goal_name()->String:
+	return "BaseGoal"
 func is_valid() -> bool:
 	return true
 

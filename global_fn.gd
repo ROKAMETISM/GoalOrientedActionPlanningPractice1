@@ -1,3 +1,4 @@
+extends Node
 static var _log := false
 static func enable_log(toggle:bool)->void:
 	_log = toggle

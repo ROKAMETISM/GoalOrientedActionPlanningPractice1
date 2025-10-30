@@ -19,18 +19,10 @@ func _physics_process(delta):
 	var goal = _get_best_goal()
 	if not goal:
 		return
+	print(goal.goal_name())
 	if _current_goal == null or goal != _current_goal:
-	# You can set in the blackboard any relevant information you want to use
-	# when calculating action costs and status. I'm not sure here is the best
-	# place to leave it, but I kept here to keep things simple.
-		var blackboard = {
-			#"position": _actor.position,
-			}
-
-		for s in _world_state._state:
-			blackboard[s] = _world_state._state[s]
 		_current_goal = goal
-		_current_plan = GOAPPlanner.new().get_plan(_current_goal, blackboard)
+		_current_plan = _planner.get_plan(_current_goal, _world_state)
 		_current_plan_step = 0
 	else:
 		_follow_plan(_current_plan, delta)

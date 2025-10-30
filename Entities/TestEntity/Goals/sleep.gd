@@ -1,5 +1,6 @@
 class_name SleepGoal extends Goal
-
+func goal_name()->String:
+	return "SleepGoal"
 func is_valid() -> bool:
 	return true
 
