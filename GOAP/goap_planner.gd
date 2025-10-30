@@ -8,20 +8,20 @@ var _actions: Array
 func set_actions(actions: Array):
 	_actions = actions
 #
-# Receives a Goal and an optional blackboard.
+# Receives a Goal and an optional world_state.
 # Returns a list of actions to be executed.
 #
-func get_plan(goal: Goal, blackboard = {}) -> Array[Action]:
+func get_plan(goal: Goal, world_state = {}) -> Array[Action]:
 	var desired_state = goal.get_desired_state().duplicate()
 
 	if desired_state.is_empty():
 		return []
 
-	return _find_best_plan(goal, desired_state, blackboard)
+	return _find_best_plan(goal, desired_state, world_state)
 
 
 
-func _find_best_plan(goal, desired_state, blackboard):
+func _find_best_plan(goal, desired_state, world_state)->Array[Action]:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root = {
@@ -32,8 +32,8 @@ func _find_best_plan(goal, desired_state, blackboard):
 
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
-	if _build_plans(root, blackboard.duplicate()):
-		var plans = _transform_tree_into_array(root, blackboard)
+	if _build_plans(root, world_state.duplicate()):
+		var plans = _transform_tree_into_array(root, world_state)
 		return _get_cheapest_plan(plans)
 
 	return []
@@ -67,15 +67,15 @@ func _get_cheapest_plan(plans):
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plans(step, blackboard):
+func _build_plans(step, world_state):
 	var has_followup = false
 
   # each node in the graph has it's own desired state.
 	var state = step.state.duplicate()
-  # checks if the blackboard contains data that can
+  # checks if the world_state contains data that can
   # satisfy the current state.
 	for s in step.state:
-		if state[s] == blackboard.get(s):
+		if state[s] == world_state.get(s):
 			state.erase(s)
 
   # if the state is empty, it means this branch already
@@ -117,7 +117,7 @@ func _build_plans(step, blackboard):
 			# if it's not empty, _build_plans is called again (recursively) so
 			# it can try to find actions to satisfy this current state. In case
 			# it can't find anything, this action won't be included in the graph.
-			if desired_state.is_empty() or _build_plans(s, blackboard.duplicate()):
+			if desired_state.is_empty() or _build_plans(s, world_state.duplicate()):
 				step.children.push_back(s)
 				has_followup = true
 
@@ -130,18 +130,18 @@ func _build_plans(step, blackboard):
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(p, blackboard):
+func _transform_tree_into_array(p, world_state):
 	var plans = []
 
 	if p.children.size() == 0:
-		plans.push_back({ "actions": [p.action], "cost": p.action.get_cost(blackboard) })
+		plans.push_back({ "actions": [p.action], "cost": p.action.get_cost(world_state) })
 		return plans
 
 	for c in p.children:
-		for child_plan in _transform_tree_into_array(c, blackboard):
+		for child_plan in _transform_tree_into_array(c, world_state):
 			if p.action.has_method("get_cost"):
 				child_plan.actions.push_back(p.action)
-				child_plan.cost += p.action.get_cost(blackboard)
+				child_plan.cost += p.action.get_cost(world_state)
 			plans.push_back(child_plan)
 	return plans
 

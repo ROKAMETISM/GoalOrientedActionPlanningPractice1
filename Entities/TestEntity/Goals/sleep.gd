@@ -11,4 +11,5 @@ func priority() -> int:
 
 func get_desired_state() -> Dictionary:
 	return {
+		"HasSlept":true
 	}

@@ -20,6 +20,7 @@ func _physics_process(delta):
 	if not goal:
 		return
 	print(goal.goal_name())
+	print(_current_plan)
 	if _current_goal == null or goal != _current_goal:
 		_current_goal = goal
 		_current_plan = _planner.get_plan(_current_goal, _world_state)
@@ -28,10 +29,10 @@ func _physics_process(delta):
 		_follow_plan(_current_plan, delta)
 	
 
-func init(actor, goals: Array[Goal]):
+func init(actor, goals: Array[Goal], actions:Array[Action]):
 	_actor = actor
 	_goals = goals
-
+	_actions = actions
 
 #
 # Returns the highest priority goal available.

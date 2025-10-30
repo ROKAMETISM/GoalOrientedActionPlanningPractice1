@@ -7,4 +7,4 @@ extends CharacterBody2D
 func _ready()->void:
 	move_fsm.init(self, [move_controller])
 	move_controller.init(self)
-	agent.init(self, [SleepGoal.new()])
+	agent.init(self, [SleepGoal.new()], [SleepAction.new()])

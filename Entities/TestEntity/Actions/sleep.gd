@@ -7,6 +7,6 @@ func get_cost(_blackboard : Dictionary)->int:
 func get_preconditions() -> Dictionary:
 	return {}
 func get_effects() -> Dictionary:
-	return {}
+	return {"HasSlept":true}
 func perform(_actor, _delta) -> bool:
 	return false
