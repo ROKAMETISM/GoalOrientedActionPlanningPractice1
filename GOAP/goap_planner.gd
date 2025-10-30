@@ -13,13 +13,10 @@ func set_actions(actions: Array):
 #
 func get_plan(goal: Goal, world_state = {}) -> Array[Action]:
 	var desired_state = goal.get_desired_state().duplicate()
-
 	if desired_state.is_empty():
+		print("desired state empty")
 		return []
-
 	return _find_best_plan(goal, desired_state, world_state)
-
-
 
 func _find_best_plan(goal, desired_state, world_state)->Array[Action]:
   # goal is set as root action. It does feel weird
@@ -35,7 +32,6 @@ func _find_best_plan(goal, desired_state, world_state)->Array[Action]:
 	if _build_plans(root, world_state.duplicate()):
 		var plans = _transform_tree_into_array(root, world_state)
 		return _get_cheapest_plan(plans)
-
 	return []
 
 
