@@ -1,11 +1,13 @@
 class_name GOAPAgent
 extends Node
-var _goals
-var _current_goal
-var _current_plan
+var _goals : Array[Goal]
+var _actions : Array[Action]
+var _current_goal : Goal
+var _current_plan : Array[Action]
 var _current_plan_step = 0
 
 var _actor
+
 
 func _physics_process(delta):
 	var goal = _get_best_goal()
@@ -20,7 +22,7 @@ func _physics_process(delta):
 		for s in WorldState._state:
 			blackboard[s] = WorldState._state[s]
 		_current_goal = goal
-		_current_plan = GOAPPlanner.get_plan(_current_goal, blackboard)
+		_current_plan = GOAPPlanner.new().get_plan(_current_goal, blackboard)
 		_current_plan_step = 0
 	else:
 		_follow_plan(_current_plan, delta)
