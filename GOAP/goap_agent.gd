@@ -1,14 +1,12 @@
-class_name GOAPAgent
-extends Node
+class_name GOAPAgent extends Node
 var _goals : Array[Goal]
 var _actions : Array[Action]
 var _world_state := WorldState.new()
 var _planner := GOAPPlanner.new()
 var _current_goal : Goal
-var _current_plan : Array[Action]
-var _current_plan_step = 0
+var _current_plan : Plan
 
-var _actor
+var _actor : Controller
 
 func _physics_process(delta):
 	var goal = _get_best_goal()
@@ -17,13 +15,9 @@ func _physics_process(delta):
 	if _current_goal == null or goal != _current_goal:
 		_current_goal = goal
 		Fn.LOG(_current_goal.goal_name())
-		var new_plan =  _planner.get_plan(_current_goal, _world_state)
-		_current_plan.clear()
-		for plan_action in new_plan:
-			_current_plan.append(plan_action)
-		_current_plan_step = 0
+		_current_plan =  _planner.get_plan(_current_goal, _world_state)
 	else:
-		_follow_plan(_current_plan, delta)
+		_current_plan.follow_plan(_actor, delta, _world_state)
 	
 
 func init(actor, goals: Array[Goal], actions:Array[Action]):
@@ -45,18 +39,3 @@ func _get_best_goal():
 		if goal.is_valid(_world_state) and (highest_priority == null or goal.priority() > highest_priority.priority()):
 			highest_priority = goal
 	return highest_priority
-
-
-#
-# Executes plan. This function is called on every game loop.
-# "plan" is the current list of actions, and delta is the time since last loop.
-#
-# Every action exposes a function called perform, which will return true when
-# the job is complete, so the agent can jump to the next action in the list.
-#
-func _follow_plan(plan, delta):
-	if plan.size() == 0:
-		return
-	var is_step_complete = plan[_current_plan_step].perform(_actor, delta, _world_state)
-	if is_step_complete and _current_plan_step < plan.size() - 1:
-		_current_plan_step += 1

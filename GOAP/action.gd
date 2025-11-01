@@ -3,7 +3,7 @@ func action_name()->String:
 	return "BaseAction"
 func is_valid() -> bool:
 	return true
-func get_cost(_blackboard : Dictionary)->int:
+func get_cost(_world_state : Dictionary)->int:
 	return 1000
 func get_preconditions() -> Dictionary:
 	return {}

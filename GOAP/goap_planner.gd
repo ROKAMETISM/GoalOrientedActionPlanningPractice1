@@ -1,14 +1,20 @@
 class_name GOAPPlanner extends Node
 
 var _actions: Array[Action]
+
 func set_actions(actions: Array[Action])->void:
 	_actions = actions
-func get_plan(goal: Goal, world_state : WorldState)->Array[Action]:
+
+
+func get_plan(goal: Goal, world_state : WorldState)->Plan:
+	var plan  = Plan.new()
 	var desired_state : Dictionary = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
-		return []
+		return plan
 	return _find_best_plan(goal, desired_state, world_state)
-func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : WorldState)->Array[Action]:
+
+
+func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : WorldState)->Plan:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root := PlanNode.new()
@@ -16,27 +22,23 @@ func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : Worl
 
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
-	if _build_plans(root, world_state):
+	if _build_plan_tree(root, world_state):
 		var plans = _transform_tree_into_array(root, world_state)
 		return _get_cheapest_plan(plans)
-	return []
+	return Plan.new()
 
 
 #
 # Compares plan's cost and returns
 # actions included in the cheapest one.
 #
-func _get_cheapest_plan(plans)->Array[Action]:
-	var best_plan = null
-	for p in plans:
-		_print_plan(p)
-		if best_plan == null or p.cost < best_plan.cost:
-			best_plan = p
-	var return_plan : Array[Action]
-	if best_plan :
-		for best_action in best_plan.actions:
-			return_plan.append(best_action)
-	return return_plan
+func _get_cheapest_plan(plans)->Plan:
+	var best_plan : Plan = null
+	for plan in plans:
+		_print_plan(plan)
+		if best_plan == null or plan.cost < best_plan.cost:
+			best_plan = plan
+	return best_plan
 
 
 #
@@ -54,10 +56,10 @@ func _get_cheapest_plan(plans)->Array[Action]:
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plans(current_node : PlanNode, world_state : WorldState)->bool:
+func _build_plan_tree(root : PlanNode, world_state : WorldState)->bool:
 	var has_followup = false
 	# each node in the graph has it's own desired state.
-	var state : Dictionary = current_node.duplicate_desired_state()
+	var state : Dictionary = root.duplicate_desired_state()
 	# checks if the world_state contains data that can
 	# satisfy the current state.
 	_erase_matching_state(state, world_state._state)
@@ -89,11 +91,11 @@ func _build_plans(current_node : PlanNode, world_state : WorldState)->bool:
 		s.set_node(action, desired_state)
 		# if desired state is empty, it means this action
 		# can be included in the graph.
-		# if it's not empty, _build_plans is called again (recursively) so
+		# if it's not empty, _build_plan_tree is called again (recursively) so
 		# it can try to find actions to satisfy this current state. In case
 		# it can't find anything, this action won't be included in the graph.
-		if desired_state.is_empty() or _build_plans(s, world_state):
-			current_node.add_child_node(s)
+		if desired_state.is_empty() or _build_plan_tree(s, world_state):
+			root.add_child_node(s)
 			has_followup = true
 
 	return has_followup
@@ -113,21 +115,22 @@ func _erase_matching_state(state_to_erase:Dictionary, state_reference:Dictionary
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(root:PlanNode, world_state : WorldState):
-	var plans : Array[Dictionary] = []
+func _transform_tree_into_array(root:PlanNode, world_state : WorldState) -> Array[Plan]:
+	var plans : Array[Plan] = []
 	var action : Action = root.get_action()
 	if root.get_children().size() == 0:
-		action = root.get_action()
-		plans.append({ "actions": [action], "cost": action.get_cost(world_state._state) })
+		var plan = Plan.new()
+		plan.init([action], [action.get_cost(world_state._state)])
+		plans.append(plan)
 		return plans
 
-	for plan in root.get_children():
-		for child_plan in _transform_tree_into_array(plan, world_state):
+	for node : PlanNode in root.get_children():
+		for child_plan in _transform_tree_into_array(node, world_state):
+			action = node.get_action()
 			if not action:
 				continue
 			if action.has_method("get_cost"):
-				child_plan.actions.append(action)
-				child_plan.cost += action.get_cost(world_state._state)
+				child_plan.append(action, action.get_cost(world_state._state))
 			plans.append(child_plan)
 	return plans
 
@@ -135,11 +138,11 @@ func _transform_tree_into_array(root:PlanNode, world_state : WorldState):
 #
 # Prints plan. Used for Debugging only.
 #
-func _print_plan(plan):
-	var actions = []
-	for a in plan.actions:
-		actions.append(a.action_name())
-	Fn.LOG({"cost": plan.cost, "actions": actions})
+func _print_plan(plan:Plan)->void:
+	var action_names : Array[String] = []
+	for action : Action in plan.get_actions():
+		action_names.append(action.action_name())
+	Fn.LOG({"cost": plan.get_cost(), "actions": action_names})
 
 class PlanNode:
 	var _action : Action = null
