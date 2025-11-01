@@ -9,5 +9,5 @@ func get_preconditions() -> Dictionary:
 	return {}
 func get_effects() -> Dictionary:
 	return {}
-func perform(_actor : Controller, _delta : float, _local_world : LocalWorld) -> bool:
+func perform(_actor, _delta : float, _local_world : LocalWorld) -> bool:
 	return false

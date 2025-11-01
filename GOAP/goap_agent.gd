@@ -6,15 +6,15 @@ var _planner := GOAPPlanner.new()
 var _current_goal : Goal
 var _current_plan : Plan
 
-var _actor : Controller
+var _actor
 
 func _physics_process(delta:float)->void:
 	var goal : Goal = _get_best_goal()
 	if not goal:
 		return
-	if _current_goal == null or goal != _current_goal:
+	if _is_new_best_goal(goal):
 		_current_goal = goal
-		Fn.LOG(_current_goal.goal_name())
+		Fn.LOG(_current_goal.goal_name(), "CurrentGoalUpdated")
 		_current_plan =  _planner.get_plan(_current_goal, _local_world)
 	else:
 		_current_plan.follow_plan(_actor, delta, _local_world)
@@ -34,8 +34,15 @@ func init(actor, goals: Array[Goal], actions:Array[Action]):
 #
 func _get_best_goal()->Goal:
 	var highest_priority = null
-
 	for goal in _goals:
-		if goal.is_valid(_local_world) and (highest_priority == null or goal.priority() > highest_priority.priority()):
+		if _is_better_goal(goal, highest_priority):
 			highest_priority = goal
 	return highest_priority
+
+
+func _is_better_goal(goal:Goal, current_goal:Goal)->bool:
+	return goal.is_valid(_local_world) and (current_goal == null or goal.priority() > current_goal.priority())
+
+
+func _is_new_best_goal(goal:Goal)->bool:
+	return _current_goal == null or goal != _current_goal

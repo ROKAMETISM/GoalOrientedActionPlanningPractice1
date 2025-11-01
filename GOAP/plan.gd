@@ -13,6 +13,8 @@ func get_actions()->Array[Action]:
 	return _actions
 func get_cost()->int:
 	return _cost
+func get_current_step()->int:
+	return _current_step
 func append(action:Action, cost:int)->void:
 	_actions.append(action)
 	_cost += cost
