@@ -33,6 +33,7 @@ func init(actor, goals: Array[Goal], actions:Array[Action]):
 	_actor = actor
 	_goals = goals
 	_actions = actions
+	_world_state._state["HasSlept"]=false
 
 #
 # Returns the highest priority goal available.
