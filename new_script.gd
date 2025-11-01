@@ -9,6 +9,8 @@ enum my_state {
 var direction : int
 
 
+var my_data : Dictionary
+
 func _ready() -> void:
 	if not is_moving() : direction = 0
 	

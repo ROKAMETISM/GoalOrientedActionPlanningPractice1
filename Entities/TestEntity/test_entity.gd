@@ -14,7 +14,7 @@ func _ready()->void:
 			WanderGoal.new()],
 			[SleepAction.new(),
 			WanderAction.new()])
-
+			
 func _physics_process(_delta: float) -> void:
 	global_position = global_position.posmodv(get_viewport().size)
 

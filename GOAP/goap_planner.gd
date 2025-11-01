@@ -1,35 +1,22 @@
 class_name GOAPPlanner extends Node
 
-var _actions: Array
-#
-# set actions available for planning.
-# this can be changed in runtime for more dynamic options.
-#
-func set_actions(actions: Array):
+var _actions: Array[Action]
+func set_actions(actions: Array[Action])->void:
 	_actions = actions
-#
-# Receives a Goal and an optional world_state.
-# Returns a list of actions to be executed.
-#
-func get_plan(goal: Goal, world_state : WorldState):
-	var desired_state = goal.get_desired_state().duplicate()
+func get_plan(goal: Goal, world_state : WorldState)->Array[Action]:
+	var desired_state : Dictionary = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
-		print("desired state empty")
 		return []
 	return _find_best_plan(goal, desired_state, world_state)
-
-func _find_best_plan(goal, desired_state, world_state : WorldState):
+func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : WorldState)->Array[Action]:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
-	var root = {
-		"action": goal,
-		"state": desired_state,
-		"children": []
-	}
+	var root := PlanNode.new()
+	root.set_node(null, desired_state)
 
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
-	if _build_plans(root, world_state.duplicate()):
+	if _build_plans(root, world_state):
 		var plans = _transform_tree_into_array(root, world_state)
 		return _get_cheapest_plan(plans)
 	return []
@@ -39,13 +26,16 @@ func _find_best_plan(goal, desired_state, world_state : WorldState):
 # Compares plan's cost and returns
 # actions included in the cheapest one.
 #
-func _get_cheapest_plan(plans):
+func _get_cheapest_plan(plans)->Array[Action]:
 	var best_plan = null
 	for p in plans:
 		_print_plan(p)
 		if best_plan == null or p.cost < best_plan.cost:
 			best_plan = p
-	return best_plan.actions
+	var return_plan : Array[Action]
+	for best_action in best_plan.actions:
+		return_plan.append(best_action)
+	return return_plan
 
 
 #
@@ -63,16 +53,13 @@ func _get_cheapest_plan(plans):
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plans(step, world_state : WorldState):
+func _build_plans(current_node : PlanNode, world_state : WorldState)->bool:
 	var has_followup = false
-
-  # each node in the graph has it's own desired state.
-	var state = step.state.duplicate()
-  # checks if the world_state contains data that can
-  # satisfy the current state.
-	for s in step.state:
-		if state[s] == world_state._state.get(s):
-			state.erase(s)
+	# each node in the graph has it's own desired state.
+	var state : Dictionary = current_node.duplicate_desired_state()
+	# checks if the world_state contains data that can
+	# satisfy the current state.
+	_erase_matching_state(state, world_state._state)
 
   # if the state is empty, it means this branch already
   # found the solution, so it doesn't need to look for
@@ -86,39 +73,38 @@ func _build_plans(step, world_state : WorldState):
 
 		var should_use_action = false
 		var effects = action.get_effects()
-		var desired_state = state.duplicate()
-
-	# check if action should be used, i.e. it
-	# satisfies at least one condition from the
-	# desired state
-		for s in desired_state:
-			if desired_state[s] == effects.get(s):
-				desired_state.erase(s)
-				should_use_action = true
-
-		if should_use_action:
-			# adds actions pre-conditions to the desired state
-			var preconditions = action.get_preconditions()
-			for p in preconditions:
-				desired_state[p] = preconditions[p]
-
-			var s = {
-				"action": action,
-				"state": desired_state,
-				"children": []
-				}
-
-			# if desired state is empty, it means this action
-			# can be included in the graph.
-			# if it's not empty, _build_plans is called again (recursively) so
-			# it can try to find actions to satisfy this current state. In case
-			# it can't find anything, this action won't be included in the graph.
-			if desired_state.is_empty() or _build_plans(s, world_state.duplicate()):
-				step.children.push_back(s)
-				has_followup = true
+		var desired_state : Dictionary = state.duplicate()
+	
+		# check if action should be used, i.e. it
+		# satisfies at least one condition from the
+		# desired state
+		should_use_action = _erase_matching_state(desired_state, effects)
+		if not should_use_action:
+			continue
+		# adds actions pre-conditions to the desired state
+		var preconditions = action.get_preconditions()
+		desired_state.merge(preconditions)
+		var s := PlanNode.new()
+		s.set_node(action, desired_state)
+		# if desired state is empty, it means this action
+		# can be included in the graph.
+		# if it's not empty, _build_plans is called again (recursively) so
+		# it can try to find actions to satisfy this current state. In case
+		# it can't find anything, this action won't be included in the graph.
+		if desired_state.is_empty() or _build_plans(s, world_state):
+			current_node.add_child_node(s)
+			has_followup = true
 
 	return has_followup
 
+
+func _erase_matching_state(state_to_erase:Dictionary, state_reference:Dictionary)->bool:
+	var has_erased := false
+	for state_name in state_to_erase:
+		if state_to_erase[state_name] == state_reference.get(state_name):
+			state_to_erase.erase(state_name)
+			has_erased = true
+	return has_erased
 
 #
 # Transforms graph with actions into list of actions and calculates
@@ -127,18 +113,18 @@ func _build_plans(step, world_state : WorldState):
 # Returns list of plans.
 #
 func _transform_tree_into_array(p, world_state : WorldState):
-	var plans = []
+	var plans : Array[Dictionary] = []
 
 	if p.children.size() == 0:
-		plans.push_back({ "actions": [p.action], "cost": p.action.get_cost(world_state._state) })
+		plans.append({ "actions": [p.action], "cost": p.action.get_cost(world_state._state) })
 		return plans
 
 	for c in p.children:
 		for child_plan in _transform_tree_into_array(c, world_state):
 			if p.action.has_method("get_cost"):
-				child_plan.actions.push_back(p.action)
+				child_plan.actions.append(p.action)
 				child_plan.cost += p.action.get_cost(world_state._state)
-			plans.push_back(child_plan)
+			plans.append(child_plan)
 	return plans
 
 
@@ -148,5 +134,23 @@ func _transform_tree_into_array(p, world_state : WorldState):
 func _print_plan(plan):
 	var actions = []
 	for a in plan.actions:
-		actions.push_back(a.action_name())
-	print({"cost": plan.cost, "actions": actions})
+		actions.append(a.action_name())
+	Fn.LOG({"cost": plan.cost, "actions": actions})
+
+class PlanNode extends Node:
+	var _action : Action = null
+	var _desired_state : Dictionary = {}
+	var _children : Array[PlanNode] = []
+	func set_node(action:Action, desired_state:Dictionary)->void:
+		_action = action
+		_desired_state = desired_state
+	func get_action()->Action:
+		return _action
+	func get_desired_state()->Dictionary:
+		return _desired_state
+	func duplicate_desired_state()->Dictionary:
+		return _desired_state.duplicate()
+	func state(key):
+		return _desired_state[key]
+	func add_child_node(node:PlanNode)->void:
+		_children.append(node)
