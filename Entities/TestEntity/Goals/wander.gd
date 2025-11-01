@@ -1,12 +1,15 @@
-class_name Goal extends Node
-
+class_name WanderGoal extends Goal
 func goal_name()->String:
-	return "BaseGoal"
+	return "WanderGoal"
 func is_valid(_world_state:WorldState) -> bool:
 	return true
 
+
 func priority() -> int:
-	return 1
+	return 0
+
 
 func get_desired_state() -> Dictionary:
-	return {}
+	return {
+		"Wander":true
+	}

@@ -18,8 +18,10 @@ script = ExtResource("1_vwajm")
 shape = SubResource("CircleShape2D_0qq3k")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("1_gw6qf")
+animation = &"Move"
 
 [node name="Controller" type="Node" parent="."]
 
@@ -44,6 +46,7 @@ script = ExtResource("2_gd663")
 move_state = NodePath("../TestEntityMove")
 metadata/_custom_type_script = "uid://ciyg1i7u2tt8o"
 
-[node name="TestEntityMove" type="Node" parent="Controller/FSM"]
+[node name="TestEntityMove" type="Node" parent="Controller/FSM" node_paths=PackedStringArray("idle_state")]
 script = ExtResource("3_4nsly")
+idle_state = NodePath("../TestEntityIDLE")
 metadata/_custom_type_script = "uid://dej5lex55tui1"

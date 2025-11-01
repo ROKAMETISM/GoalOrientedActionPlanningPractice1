@@ -8,3 +8,9 @@ script = ExtResource("1_2w1kt")
 
 [node name="TestEntity" parent="." instance=ExtResource("2_2w1kt")]
 position = Vector2(317, 180)
+
+[node name="TestEntity2" parent="." instance=ExtResource("2_2w1kt")]
+position = Vector2(645, 162)
+
+[node name="TestEntity3" parent="." instance=ExtResource("2_2w1kt")]
+position = Vector2(503, 421)

@@ -10,5 +10,5 @@ func get_preconditions() -> Dictionary:
 	return {}
 func get_effects() -> Dictionary:
 	return {"HasSlept":true}
-func perform(_actor, _delta) -> bool:
-	return false
+func perform(_actor, _delta, _world_state) -> bool:
+	return _actor.sleep(_delta, _world_state)
