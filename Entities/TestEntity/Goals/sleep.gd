@@ -1,7 +1,7 @@
 class_name SleepGoal extends Goal
 func goal_name()->String:
 	return "SleepGoal"
-func is_valid(world_state:WorldState) -> bool:
+func is_valid(world_state:LocalWorld) -> bool:
 	return not world_state.get_state("HasSlept", true)
 
 

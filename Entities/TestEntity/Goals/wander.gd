@@ -1,7 +1,7 @@
 class_name WanderGoal extends Goal
 func goal_name()->String:
 	return "WanderGoal"
-func is_valid(_world_state:WorldState) -> bool:
+func is_valid(_world_state:LocalWorld) -> bool:
 	return true
 
 

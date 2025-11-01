@@ -1,4 +1,4 @@
-class_name WorldState extends Node
+class_name LocalWorld extends Node
 
 var _state : Dictionary = {
 }

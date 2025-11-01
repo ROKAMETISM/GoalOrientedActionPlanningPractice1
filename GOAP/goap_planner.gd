@@ -6,7 +6,7 @@ func set_actions(actions: Array[Action])->void:
 	_actions = actions
 
 
-func get_plan(goal: Goal, world_state : WorldState)->Plan:
+func get_plan(goal: Goal, world_state : LocalWorld)->Plan:
 	var plan  = Plan.new()
 	var desired_state : Dictionary = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
@@ -14,7 +14,7 @@ func get_plan(goal: Goal, world_state : WorldState)->Plan:
 	return _find_best_plan(goal, desired_state, world_state)
 
 
-func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : WorldState)->Plan:
+func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : LocalWorld)->Plan:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root := PlanNode.new()
@@ -56,7 +56,7 @@ func _get_cheapest_plan(plans)->Plan:
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plan_tree(root : PlanNode, world_state : WorldState)->bool:
+func _build_plan_tree(root : PlanNode, world_state : LocalWorld)->bool:
 	var has_followup = false
 	# each node in the graph has it's own desired state.
 	var state : Dictionary = root.duplicate_desired_state()
@@ -115,7 +115,7 @@ func _erase_matching_state(state_to_erase:Dictionary, state_reference:Dictionary
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(root:PlanNode, world_state : WorldState) -> Array[Plan]:
+func _transform_tree_into_array(root:PlanNode, world_state : LocalWorld) -> Array[Plan]:
 	var plans : Array[Plan] = []
 	var action : Action = root.get_action()
 	if root.get_children().size() == 0:

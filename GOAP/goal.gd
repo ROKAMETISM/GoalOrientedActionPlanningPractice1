@@ -2,7 +2,7 @@ class_name Goal extends Node
 
 func goal_name()->String:
 	return "BaseGoal"
-func is_valid(_world_state:WorldState) -> bool:
+func is_valid(_local_world:LocalWorld) -> bool:
 	return true
 
 func priority() -> int:

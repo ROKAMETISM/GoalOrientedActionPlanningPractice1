@@ -15,7 +15,7 @@ func get_move()->Vector2:
 	
 	return _wander_direction
 
-func sleep(delta:float, _world_state:WorldState)->bool:
+func sleep(delta:float, _world_state:LocalWorld)->bool:
 	if is_sleeping:
 		_sleep_timer -= delta
 		if _sleep_timer < 0.0:
