@@ -23,6 +23,7 @@ func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : Loca
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
 	if _build_plan_tree(root, world_state):
+		root.print_tree()
 		var plans = _transform_tree_into_array(root, world_state)
 		return _get_cheapest_plan(plans)
 	return Plan.new()
@@ -163,3 +164,11 @@ class PlanNode:
 		return _desired_state[key]
 	func add_child_node(node:PlanNode)->void:
 		_children.append(node)
+	func print_tree(index:int=0)->int:
+		if _action:
+			print("Node#%d:%s"%[index, _action.action_name()])
+		else:
+			print("Node#%d:no_action"%index)
+		for child_node in _children:
+			index = child_node.print_tree(index+1)
+		return index
