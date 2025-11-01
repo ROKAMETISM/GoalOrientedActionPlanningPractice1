@@ -33,8 +33,9 @@ func _get_cheapest_plan(plans)->Array[Action]:
 		if best_plan == null or p.cost < best_plan.cost:
 			best_plan = p
 	var return_plan : Array[Action]
-	for best_action in best_plan.actions:
-		return_plan.append(best_action)
+	if best_plan :
+		for best_action in best_plan.actions:
+			return_plan.append(best_action)
 	return return_plan
 
 
@@ -112,18 +113,21 @@ func _erase_matching_state(state_to_erase:Dictionary, state_reference:Dictionary
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(p, world_state : WorldState):
+func _transform_tree_into_array(root:PlanNode, world_state : WorldState):
 	var plans : Array[Dictionary] = []
-
-	if p.children.size() == 0:
-		plans.append({ "actions": [p.action], "cost": p.action.get_cost(world_state._state) })
+	var action : Action = root.get_action()
+	if root.get_children().size() == 0:
+		action = root.get_action()
+		plans.append({ "actions": [action], "cost": action.get_cost(world_state._state) })
 		return plans
 
-	for c in p.children:
-		for child_plan in _transform_tree_into_array(c, world_state):
-			if p.action.has_method("get_cost"):
-				child_plan.actions.append(p.action)
-				child_plan.cost += p.action.get_cost(world_state._state)
+	for plan in root.get_children():
+		for child_plan in _transform_tree_into_array(plan, world_state):
+			if not action:
+				continue
+			if action.has_method("get_cost"):
+				child_plan.actions.append(action)
+				child_plan.cost += action.get_cost(world_state._state)
 			plans.append(child_plan)
 	return plans
 
@@ -137,7 +141,7 @@ func _print_plan(plan):
 		actions.append(a.action_name())
 	Fn.LOG({"cost": plan.cost, "actions": actions})
 
-class PlanNode extends Node:
+class PlanNode:
 	var _action : Action = null
 	var _desired_state : Dictionary = {}
 	var _children : Array[PlanNode] = []
@@ -150,6 +154,8 @@ class PlanNode extends Node:
 		return _desired_state
 	func duplicate_desired_state()->Dictionary:
 		return _desired_state.duplicate()
+	func get_children()->Array[PlanNode]:
+		return _children
 	func state(key):
 		return _desired_state[key]
 	func add_child_node(node:PlanNode)->void:
