@@ -10,20 +10,17 @@ var _current_plan_step = 0
 
 var _actor
 
-func _init() -> void:
-	_planner.set_actions(_actions)
-	add_child(_world_state)
-	add_child(_planner)
-
 func _physics_process(delta):
 	var goal = _get_best_goal()
 	if not goal:
 		return
-	print(goal.goal_name())
-	print(_current_plan)
 	if _current_goal == null or goal != _current_goal:
 		_current_goal = goal
-		_current_plan = _planner.get_plan(_current_goal, _world_state)
+		Fn.LOG(_planner._actions)
+		var new_plan =  _planner.get_plan(_current_goal, _world_state)
+		_current_plan.clear()
+		for plan_action in new_plan:
+			_current_plan.append(plan_action)
 		_current_plan_step = 0
 	else:
 		_follow_plan(_current_plan, delta)
@@ -34,6 +31,9 @@ func init(actor, goals: Array[Goal], actions:Array[Action]):
 	_goals = goals
 	_actions = actions
 	_world_state._state["HasSlept"]=false
+	_planner.set_actions(_actions)
+	add_child(_world_state)
+	add_child(_planner)
 
 #
 # Returns the highest priority goal available.
@@ -44,7 +44,6 @@ func _get_best_goal():
 	for goal in _goals:
 		if goal.is_valid() and (highest_priority == null or goal.priority() > highest_priority.priority()):
 			highest_priority = goal
-
 	return highest_priority
 
 

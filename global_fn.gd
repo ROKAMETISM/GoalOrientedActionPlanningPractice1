@@ -1,8 +1,8 @@
-extends Node
-static var _log := false
-static func enable_log(toggle:bool)->void:
-	_log = toggle
-static func LOG(text : String)->void:
+class_name Fn extends Node
+static var _log := true
+static func enable_log(value:bool)->void:
+	_log = value
+static func LOG(text)->void:
 	if not _log:
 		return
-	print("LOG:"+text)
+	print("LOG:"+str(text))

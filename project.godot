@@ -15,10 +15,6 @@ run/main_scene="uid://wmt72i1k7bnu"
 config/features=PackedStringArray("4.5", "Mobile")
 config/icon="res://icon.svg"
 
-[autoload]
-
-Fn="*res://global_fn.gd"
-
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

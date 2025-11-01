@@ -1,5 +1,7 @@
 class_name SleepAction extends Action
 
+func action_name()->String:
+	return "SleepAction"
 func is_valid() -> bool:
 	return true
 func get_cost(_blackboard : Dictionary)->int:

@@ -1,4 +1,6 @@
 class_name Action extends Node
+func action_name()->String:
+	return "BaseAction"
 func is_valid() -> bool:
 	return true
 func get_cost(_blackboard : Dictionary)->int:

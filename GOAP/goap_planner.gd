@@ -11,14 +11,14 @@ func set_actions(actions: Array):
 # Receives a Goal and an optional world_state.
 # Returns a list of actions to be executed.
 #
-func get_plan(goal: Goal, world_state = {}) -> Array[Action]:
+func get_plan(goal: Goal, world_state : WorldState):
 	var desired_state = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
 		print("desired state empty")
 		return []
 	return _find_best_plan(goal, desired_state, world_state)
 
-func _find_best_plan(goal, desired_state, world_state)->Array[Action]:
+func _find_best_plan(goal, desired_state, world_state : WorldState):
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root = {
@@ -63,7 +63,7 @@ func _get_cheapest_plan(plans):
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plans(step, world_state):
+func _build_plans(step, world_state : WorldState):
 	var has_followup = false
 
   # each node in the graph has it's own desired state.
@@ -71,7 +71,7 @@ func _build_plans(step, world_state):
   # checks if the world_state contains data that can
   # satisfy the current state.
 	for s in step.state:
-		if state[s] == world_state.get(s):
+		if state[s] == world_state._state.get(s):
 			state.erase(s)
 
   # if the state is empty, it means this branch already
@@ -126,18 +126,18 @@ func _build_plans(step, world_state):
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(p, world_state):
+func _transform_tree_into_array(p, world_state : WorldState):
 	var plans = []
 
 	if p.children.size() == 0:
-		plans.push_back({ "actions": [p.action], "cost": p.action.get_cost(world_state) })
+		plans.push_back({ "actions": [p.action], "cost": p.action.get_cost(world_state._state) })
 		return plans
 
 	for c in p.children:
 		for child_plan in _transform_tree_into_array(c, world_state):
 			if p.action.has_method("get_cost"):
 				child_plan.actions.push_back(p.action)
-				child_plan.cost += p.action.get_cost(world_state)
+				child_plan.cost += p.action.get_cost(world_state._state)
 			plans.push_back(child_plan)
 	return plans
 
@@ -148,5 +148,5 @@ func _transform_tree_into_array(p, world_state):
 func _print_plan(plan):
 	var actions = []
 	for a in plan.actions:
-		actions.push_back(a.get_clazz())
+		actions.push_back(a.action_name())
 	print({"cost": plan.cost, "actions": actions})
