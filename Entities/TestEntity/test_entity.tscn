@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cw85fxnssrgap"]
+[gd_scene load_steps=10 format=3 uid="uid://cw85fxnssrgap"]
 
 [ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
 [ext_resource type="Script" uid="uid://dkicb0t4qrgwv" path="res://Entities/TestEntity/test_entity.gd" id="1_vwajm"]
@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://d35mg00bfewvp" path="res://GOAP/goap_agent.gd" id="4_liuuo"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_liuuo"]
 
 [node name="TestEntity" type="CharacterBody2D"]
 motion_mode = 1
@@ -21,7 +23,7 @@ shape = SubResource("CircleShape2D_0qq3k")
 unique_name_in_owner = true
 scale = Vector2(4, 4)
 sprite_frames = ExtResource("1_gw6qf")
-animation = &"Move"
+animation = &"Fall"
 
 [node name="Controller" type="Node" parent="."]
 
@@ -50,3 +52,21 @@ metadata/_custom_type_script = "uid://ciyg1i7u2tt8o"
 script = ExtResource("3_4nsly")
 idle_state = NodePath("../TestEntityIDLE")
 metadata/_custom_type_script = "uid://dej5lex55tui1"
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -80.0
+offset_right = 20.0
+offset_bottom = -57.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "text"
+label_settings = SubResource("LabelSettings_liuuo")
+horizontal_alignment = 1
+vertical_alignment = 1

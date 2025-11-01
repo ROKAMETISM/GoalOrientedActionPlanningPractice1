@@ -4,10 +4,11 @@ class_name TestEntityMovecontroller extends Controller
 var _sleep_timer := sleep_time
 var is_sleeping := false
 
-@export var wander_time := 3.0
+@export var wander_time_min := 3.0
+@export var wander_time_max := 7.0
 @export var wander_speed := 100.0
 var _wander_direction := Vector2.ZERO
-var _wander_timer := wander_time
+var _wander_timer := -1.0
 
 func get_move()->Vector2:
 	if is_sleeping:
@@ -30,9 +31,10 @@ func sleep(delta:float, _world_state:LocalWorld)->bool:
 func wander(_delta, _world_state)->bool:
 	if _wander_direction.length_squared() <= 1.0:
 		_wander_direction = Vector2(wander_speed, 0.0).rotated(randf_range(0, 2*PI))
+		_wander_timer = randf_range(wander_time_min, wander_time_max)
 	_wander_timer -= _delta
 	if _wander_timer < 0.0:
-		_wander_timer += wander_time
+		_wander_timer += randf_range(wander_time_min, wander_time_max)
 		_world_state.set_state("HasSlept", false)
 		_wander_direction = Vector2(wander_speed, 0.0).rotated(randf_range(0, 2*PI))
 	return false
