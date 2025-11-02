@@ -21,6 +21,16 @@ func set_state(state_name:String, value)->void:
 func clear_state()->void:
 	_state = {}
 
+func get_closest_seen(item_name:String, reference_global_position:Vector2)->PickUp:
+	var closest_node : PickUp = null
+	for item:PickUp in seen_items.get(item_name, []):
+		if not is_instance_valid(closest_node):
+			closest_node = item
+			continue
+		if  Fn.get_distance(reference_global_position, item) < Fn.get_distance(reference_global_position, closest_node):
+			closest_node = item
+	return closest_node
+
 func str_state()->String:
 	var _output := ""
 	var state = get_states()

@@ -16,14 +16,14 @@ func _ready() -> void:
 	item_types.append(STICK)
 	item_types.append(IRON)
 	item_types.append(GOLD)
+	randomize()
 
 func _physics_process(delta: float) -> void:
 	
 	spawn_timer -= delta
 	if spawn_timer < 0:
-		spawn_timer += 1.5
+		spawn_timer += 1.0
 		var new_pickup : PickUp= PICKUP.instantiate()
 		new_pickup.item_data = item_types.pick_random()
-		new_pickup.global_position = Vector2(randf_range(0, 300),0).rotated(randf_range(0, 2*PI)) \
-				+ Vector2(get_viewport().size/2)
+		new_pickup.global_position = Fn.randv2_range(Vector2(16, 16), get_viewport().size-Vector2i(16, 16))
 		add_child(new_pickup)

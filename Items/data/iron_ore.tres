@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_hpktn")
 item_name = "IronOre"
+decay_time = 15.0
 in_world_texture = ExtResource("1_lnk3r")
 metadata/_custom_type_script = "uid://cauer7nverqof"

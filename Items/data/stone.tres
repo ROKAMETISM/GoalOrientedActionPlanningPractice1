@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_u6jfi")
 item_name = "Stone"
+decay_time = 10.0
 in_world_texture = ExtResource("1_ddm0q")
 metadata/_custom_type_script = "uid://cauer7nverqof"

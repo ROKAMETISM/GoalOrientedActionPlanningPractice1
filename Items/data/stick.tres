@@ -6,5 +6,6 @@
 [resource]
 script = ExtResource("1_ndjvw")
 item_name = "Stick"
+decay_time = 5.0
 in_world_texture = ExtResource("1_2fp31")
 metadata/_custom_type_script = "uid://cauer7nverqof"

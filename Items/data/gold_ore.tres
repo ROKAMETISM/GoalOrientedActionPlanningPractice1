@@ -6,6 +6,7 @@
 [resource]
 script = ExtResource("1_8xuw7")
 item_name = "GoldOre"
+decay_time = 60.0
 in_world_texture = ExtResource("1_2yvfx")
 state_required_to_pickup = Dictionary[String, Variant]({
 "HasStonePickaxe": true
