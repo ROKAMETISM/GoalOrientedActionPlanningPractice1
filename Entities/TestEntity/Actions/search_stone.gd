@@ -5,7 +5,7 @@ func action_name()->String:
 func is_valid() -> bool:
 	return true
 func get_cost(_blackboard : Dictionary)->int:
-	return 1
+	return 2
 func get_preconditions() -> Dictionary:
 	return {
 	}

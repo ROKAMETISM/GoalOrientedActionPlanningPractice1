@@ -47,7 +47,13 @@ func pickup(item_pickup : PickUp)->void:
 		item_pickup.queue_free()
 
 
+func touch_box(box:StaticBody2D, is_touching:bool)->void:
+	agent.set_state("TouchingBox", is_touching)
+	agent.set_state("BoxInstance", box)
 
 func _on_sight_area_entered(area: Area2D) -> void:
-	var item_pickup = area as PickUp
-	agent.see_item(item_pickup)
+	if area is PickUp:
+		var item_pickup = area as PickUp
+		agent.see_item(item_pickup)
+	elif area.has_method("is_box"):
+		agent.set_state("BoxInstance", area)

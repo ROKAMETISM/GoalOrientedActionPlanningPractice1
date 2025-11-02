@@ -23,7 +23,6 @@ func _find_best_plan(desired_state : Dictionary, local_world : LocalWorld)->Plan
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
 	if _build_plan_tree(root, local_world):
-		root.print_tree()
 		var plans : Array[Plan]= _transform_tree_into_array(root, local_world)
 		return _get_cheapest_plan(plans)
 	return Plan.new()
@@ -36,7 +35,6 @@ func _find_best_plan(desired_state : Dictionary, local_world : LocalWorld)->Plan
 func _get_cheapest_plan(plans : Array[Plan])->Plan:
 	var best_plan : Plan = null
 	for plan : Plan in plans:
-		_print_plan(plan)
 		if best_plan == null or plan.get_cost() < best_plan.get_cost():
 			best_plan = plan
 	return best_plan

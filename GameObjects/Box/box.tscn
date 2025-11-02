@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://by5naupk0kx1p"]
+
+[ext_resource type="Texture2D" uid="uid://dujm6rmi8lqfl" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Outdoor decoration/Chest.png" id="1_3kj0f"]
+[ext_resource type="Script" uid="uid://chb00isumw5nn" path="res://GameObjects/Box/area_2d.gd" id="2_wtmtl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l5cap"]
+size = Vector2(64, 64)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3kj0f"]
+radius = 64.0
+
+[node name="Box" type="StaticBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(4, 4)
+texture = ExtResource("1_3kj0f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l5cap")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+script = ExtResource("2_wtmtl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_3kj0f")
+debug_color = Color(0.6048572, 0.53412735, 0.25947952, 0.41960785)
+
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
+[connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
