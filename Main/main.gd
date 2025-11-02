@@ -17,7 +17,6 @@ func _ready() -> void:
 	item_types.append(IRON)
 	item_types.append(GOLD)
 	randomize()
-	Engine.time_scale = 3.0
 
 func _physics_process(delta: float) -> void:
 	
