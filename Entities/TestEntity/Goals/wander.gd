@@ -5,7 +5,7 @@ func is_valid(_world_state:LocalWorld) -> bool:
 	return true
 
 
-func priority() -> int:
+func priority(_local_world:LocalWorld) -> int:
 	return 0
 
 

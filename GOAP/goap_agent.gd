@@ -29,6 +29,13 @@ func init(actor, goals: Array[Goal], actions:Array[Action]):
 	add_child(_local_world)
 	add_child(_planner)
 
+
+func set_state(state_name:String, value)->void:
+	_local_world.set_state(state_name, value)
+
+func get_state(state_name:String, default:Variant=null)->Variant:
+	return _local_world.get_state(state_name, default)
+
 #
 # Returns the highest priosrity goal available.
 #
@@ -41,7 +48,7 @@ func _get_best_goal()->Goal:
 
 
 func _is_better_goal(goal:Goal, current_goal:Goal)->bool:
-	return goal.is_valid(_local_world) and (current_goal == null or goal.priority() > current_goal.priority())
+	return goal.is_valid(_local_world) and (current_goal == null or goal.priority(_local_world) > current_goal.priority(_local_world))
 
 
 func _is_new_best_goal(goal:Goal)->bool:

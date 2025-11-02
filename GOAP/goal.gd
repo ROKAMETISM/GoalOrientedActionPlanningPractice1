@@ -5,7 +5,7 @@ func goal_name()->String:
 func is_valid(_local_world:LocalWorld) -> bool:
 	return true
 
-func priority() -> int:
+func priority(_local_world:LocalWorld) -> int:
 	return 1
 
 func get_desired_state() -> Dictionary:
