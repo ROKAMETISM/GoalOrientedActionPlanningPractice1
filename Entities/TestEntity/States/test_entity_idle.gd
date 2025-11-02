@@ -1,7 +1,6 @@
 class_name TestEntityIDLE extends State
 
 @export var move_state : TestEntityMove
-var animation := "IDLE"
 
 func enter() -> void:
 	super()

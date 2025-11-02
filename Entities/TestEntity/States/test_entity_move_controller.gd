@@ -3,7 +3,7 @@ class_name TestEntityMovecontroller extends Controller
 
 @onready var agent : GOAPAgent = %GOAPAgent
 
-@export var sleep_time := 2.0
+@export var sleep_time := 4.0
 var _sleep_timer := sleep_time
 var is_sleeping := false
 var time_since_last_slept := 0.0
@@ -26,6 +26,14 @@ func _physics_process(delta: float) -> void:
 		if time_since_last_slept > 5.0:
 			agent.set_state("HasSlept", false)
 	agent.set_state("TimeSinceLastSlept", time_since_last_slept)
+	parent.animate(_get_animation())
+
+func _get_animation()->String:
+	if is_sleeping:
+		return "Fall"
+	if get_move():
+		return "Move"
+	return "IDLE"
 
 func sleep(delta:float, _world_state:LocalWorld)->bool:
 	if is_sleeping:

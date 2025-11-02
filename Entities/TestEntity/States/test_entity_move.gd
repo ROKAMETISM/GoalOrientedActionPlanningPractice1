@@ -1,6 +1,5 @@
 class_name TestEntityMove extends State
 @export var idle_state : TestEntityIDLE
-var animation := "Move"
 func enter() -> void:
 	super()
 func process_physics(_delta: float) -> Array:
