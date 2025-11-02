@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://wmt72i1k7bnu"]
+[gd_scene load_steps=7 format=3 uid="uid://wmt72i1k7bnu"]
 
 [ext_resource type="Script" uid="uid://dtl47ht3hcln3" path="res://Main/main.gd" id="1_2w1kt"]
 [ext_resource type="PackedScene" uid="uid://cw85fxnssrgap" path="res://Entities/TestEntity/test_entity.tscn" id="2_2w1kt"]
+[ext_resource type="PackedScene" uid="uid://6t2e6nc4cj8s" path="res://Items/pickup.tscn" id="3_eunhr"]
+[ext_resource type="Resource" uid="uid://xxjmeogmth2x" path="res://Items/data/stone.tres" id="4_k3v36"]
+[ext_resource type="Resource" uid="uid://cnsuhw8e4qaof" path="res://Items/data/stick.tres" id="5_k3v36"]
+[ext_resource type="Resource" uid="uid://pm3va3nt8rfm" path="res://Items/data/iron_ore.tres" id="5_liyct"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_2w1kt")
@@ -9,8 +13,22 @@ script = ExtResource("1_2w1kt")
 [node name="TestEntity" parent="." instance=ExtResource("2_2w1kt")]
 position = Vector2(317, 180)
 
-[node name="TestEntity2" parent="." instance=ExtResource("2_2w1kt")]
-position = Vector2(645, 162)
+[node name="Pickup" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(870, 430)
+item_data = ExtResource("4_k3v36")
 
-[node name="TestEntity3" parent="." instance=ExtResource("2_2w1kt")]
-position = Vector2(503, 421)
+[node name="Pickup2" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(785, 235)
+item_data = ExtResource("5_liyct")
+
+[node name="Pickup3" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(269, 387)
+item_data = ExtResource("4_k3v36")
+
+[node name="Pickup4" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(591, 536)
+item_data = ExtResource("5_k3v36")
+
+[node name="Pickup5" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(290, 495)
+item_data = ExtResource("5_k3v36")

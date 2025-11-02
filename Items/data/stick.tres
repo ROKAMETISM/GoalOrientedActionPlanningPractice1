@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://cnsuhw8e4qaof"]
+
+[ext_resource type="Texture2D" uid="uid://k8tgwawgjojh" path="res://Assets/Sprites/sprite_stick.png" id="1_2fp31"]
+[ext_resource type="Script" uid="uid://cauer7nverqof" path="res://Items/item.gd" id="1_ndjvw"]
+
+[resource]
+script = ExtResource("1_ndjvw")
+name = "Stick"
+in_world_texture = ExtResource("1_2fp31")
+metadata/_custom_type_script = "uid://cauer7nverqof"

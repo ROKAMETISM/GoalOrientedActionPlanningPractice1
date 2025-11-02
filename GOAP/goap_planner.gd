@@ -6,15 +6,15 @@ func set_actions(actions: Array[Action])->void:
 	_actions = actions
 
 
-func get_plan(goal: Goal, world_state : LocalWorld)->Plan:
+func get_plan(goal: Goal, local_world : LocalWorld)->Plan:
 	var plan  = Plan.new()
 	var desired_state : Dictionary = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
 		return plan
-	return _find_best_plan(desired_state, world_state)
+	return _find_best_plan(desired_state, local_world)
 
 
-func _find_best_plan(desired_state : Dictionary, world_state : LocalWorld)->Plan:
+func _find_best_plan(desired_state : Dictionary, local_world : LocalWorld)->Plan:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root := PlanNode.new()
@@ -22,9 +22,9 @@ func _find_best_plan(desired_state : Dictionary, world_state : LocalWorld)->Plan
 
   # build plans will populate root with children.
   # In case it doesn't find a valid path, it will return false.
-	if _build_plan_tree(root, world_state):
+	if _build_plan_tree(root, local_world):
 		root.print_tree()
-		var plans = _transform_tree_into_array(root, world_state)
+		var plans = _transform_tree_into_array(root, local_world)
 		return _get_cheapest_plan(plans)
 	return Plan.new()
 
@@ -57,13 +57,13 @@ func _get_cheapest_plan(plans)->Plan:
 # Be aware that for simplicity, the current implementation is not protected from
 # circular dependencies. This is easy to implement though.
 #
-func _build_plan_tree(root : PlanNode, world_state : LocalWorld)->bool:
+func _build_plan_tree(root : PlanNode, local_world : LocalWorld)->bool:
 	var has_followup = false
 	# each node in the graph has it's own desired state.
 	var state : Dictionary = root.duplicate_desired_state()
-	# checks if the world_state contains data that can
+	# checks if the local_world contains data that can
 	# satisfy the current state.
-	_erase_matching_state(state, world_state._state)
+	_erase_matching_state(state, local_world.get_states())
 
   # if the state is empty, it means this branch already
   # found the solution, so it doesn't need to look for
@@ -88,15 +88,15 @@ func _build_plan_tree(root : PlanNode, world_state : LocalWorld)->bool:
 		# adds actions pre-conditions to the desired state
 		var preconditions = action.get_preconditions()
 		desired_state.merge(preconditions)
-		var s := PlanNode.new()
-		s.set_node(action, desired_state)
+		var child_node := PlanNode.new()
+		child_node.set_node(action, desired_state)
 		# if desired state is empty, it means this action
 		# can be included in the graph.
 		# if it's not empty, _build_plan_tree is called again (recursively) so
 		# it can try to find actions to satisfy this current state. In case
 		# it can't find anything, this action won't be included in the graph.
-		if desired_state.is_empty() or _build_plan_tree(s, world_state):
-			root.add_child_node(s)
+		if desired_state.is_empty() or _build_plan_tree(child_node, local_world):
+			root.add_child_node(child_node)
 			has_followup = true
 
 	return has_followup
@@ -116,24 +116,24 @@ func _erase_matching_state(state_to_erase:Dictionary, state_reference:Dictionary
 #
 # Returns list of plans.
 #
-func _transform_tree_into_array(root:PlanNode, world_state : LocalWorld) -> Array[Plan]:
+func _transform_tree_into_array(root:PlanNode, local_world : LocalWorld) -> Array[Plan]:
 	var plans : Array[Plan] = []
 	var action : Action = root.get_action()
 	if root.get_children().size() == 0:
 		var plan = Plan.new() 
 		if action:
-			plan.init([action], [action.get_cost(world_state._state)])
+			plan.init([action], [action.get_cost(local_world._state)])
 		plans.append(plan)
 		return plans
 	var child_nodes := root.get_children()
 	for node : PlanNode in child_nodes:
-		var sub_plans : Array[Plan] = _transform_tree_into_array(node, world_state)
+		var sub_plans : Array[Plan] = _transform_tree_into_array(node, local_world)
 		for child_plan in sub_plans:
 			plans.append(child_plan)
 			if action == null:
 				continue
 			if action.has_method("get_cost"):
-				child_plan.append(action, action.get_cost(world_state._state))
+				child_plan.append(action, action.get_cost(local_world._state))
 	return plans
 
 

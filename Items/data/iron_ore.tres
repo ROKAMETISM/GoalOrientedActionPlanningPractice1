@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://pm3va3nt8rfm"]
+
+[ext_resource type="Script" uid="uid://cauer7nverqof" path="res://Items/item.gd" id="1_hpktn"]
+[ext_resource type="Texture2D" uid="uid://suknhbbiucqx" path="res://Assets/Sprites/sprite_iron_ore.png" id="1_lnk3r"]
+
+[resource]
+script = ExtResource("1_hpktn")
+name = "IronOre"
+in_world_texture = ExtResource("1_lnk3r")
+metadata/_custom_type_script = "uid://cauer7nverqof"

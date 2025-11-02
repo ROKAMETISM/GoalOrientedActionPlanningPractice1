@@ -45,7 +45,7 @@ func change_state(data:Array) -> void:
 				transition.new_state.exit()
 	state_updated.emit(_current_states)
 
-func str__current_states()->String:
+func str_current_states()->String:
 	var _output:=""
 	for state_element in _current_states:
 		_output += state_element.get_state_name()
