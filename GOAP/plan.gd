@@ -41,6 +41,8 @@ func init(actions:Array[Action], costs:Array[int])->void:
 func follow_plan(_actor, delta, world_state):
 	if _actions.size() == 0:
 		return
+	if _actions[_current_step] == null:
+		return
 	var is_step_complete = _actions[_current_step].perform(_actor, delta, world_state)
 	if is_step_complete and (_current_step < _actions.size() - 1):
 		_current_step += 1

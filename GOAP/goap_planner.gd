@@ -11,10 +11,10 @@ func get_plan(goal: Goal, world_state : LocalWorld)->Plan:
 	var desired_state : Dictionary = goal.get_desired_state().duplicate()
 	if desired_state.is_empty():
 		return plan
-	return _find_best_plan(goal, desired_state, world_state)
+	return _find_best_plan(desired_state, world_state)
 
 
-func _find_best_plan(goal : Goal, desired_state : Dictionary, world_state : LocalWorld)->Plan:
+func _find_best_plan(desired_state : Dictionary, world_state : LocalWorld)->Plan:
   # goal is set as root action. It does feel weird
   # but the code is simpler this way.
 	var root := PlanNode.new()
@@ -120,19 +120,20 @@ func _transform_tree_into_array(root:PlanNode, world_state : LocalWorld) -> Arra
 	var plans : Array[Plan] = []
 	var action : Action = root.get_action()
 	if root.get_children().size() == 0:
-		var plan = Plan.new()
-		plan.init([action], [action.get_cost(world_state._state)])
+		var plan = Plan.new() 
+		if action:
+			plan.init([action], [action.get_cost(world_state._state)])
 		plans.append(plan)
 		return plans
-
-	for node : PlanNode in root.get_children():
-		for child_plan in _transform_tree_into_array(node, world_state):
-			action = node.get_action()
-			if not action:
+	var child_nodes := root.get_children()
+	for node : PlanNode in child_nodes:
+		var sub_plans : Array[Plan] = _transform_tree_into_array(node, world_state)
+		for child_plan in sub_plans:
+			plans.append(child_plan)
+			if action == null:
 				continue
 			if action.has_method("get_cost"):
 				child_plan.append(action, action.get_cost(world_state._state))
-			plans.append(child_plan)
 	return plans
 
 
@@ -166,9 +167,11 @@ class PlanNode:
 		_children.append(node)
 	func print_tree(index:int=0)->int:
 		if _action:
-			print("Node#%d:%s"%[index, _action.action_name()])
+			print("Node#%d [%d]:%s"%[index,  _children.size(), _action.action_name(),])
 		else:
-			print("Node#%d:no_action"%index)
+			print()
+			Fn.LOG("PlanTree")
+			print("Node#%d [%d]:no_action"%[index, _children.size() ])
 		for child_node in _children:
 			index = child_node.print_tree(index+1)
 		return index
