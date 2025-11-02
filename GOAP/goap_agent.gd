@@ -9,15 +9,22 @@ var _current_plan : Plan
 var _actor
 
 func _physics_process(delta:float)->void:
-	var goal : Goal = _get_best_goal()
-	if not goal:
-		return
-	if _is_new_best_goal(goal):
-		_current_goal = goal
-		Fn.LOG(_current_goal.goal_name(), "CurrentGoalUpdated")
-		_current_plan =  _planner.get_plan(_current_goal, _local_world)
-	else:
-		_current_plan.follow_plan(_actor, delta, _local_world)
+	var goals := _goals.duplicate()
+	for i in range(goals.size()):
+		var goal : Goal = _get_best_goal(goals)
+		var plan :=  _planner.get_plan(goal, _local_world)
+		if plan.is_empty():
+			goals.erase(goal)
+			continue
+		else:
+			if _is_new_best_goal(goal):
+				_current_plan = plan
+				_current_goal = goal
+				Fn.LOG(_current_goal.goal_name(), "\nCurrentGoalUpdated")
+			else:
+				_current_plan.follow_plan(_actor, delta, _local_world)
+			break
+	
 	
 
 func init(actor, goals: Array[Goal], actions:Array[Action]):
@@ -46,9 +53,9 @@ func see_item(item_pickup:PickUp)->void:
 #
 # Returns the highest priosrity goal available.
 #
-func _get_best_goal()->Goal:
+func _get_best_goal(goals:Array[Goal])->Goal:
 	var highest_priority = null
-	for goal in _goals:
+	for goal in goals:
 		if _is_better_goal(goal, highest_priority):
 			highest_priority = goal
 	return highest_priority

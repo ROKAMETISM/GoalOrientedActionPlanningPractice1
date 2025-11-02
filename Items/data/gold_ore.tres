@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="Item" load_steps=3 format=3 uid="uid://bk286ks0moxyp"]
+
+[ext_resource type="Texture2D" uid="uid://dk1w00vg7wm6y" path="res://Assets/Sprites/sprite_gold_ore.png" id="1_2yvfx"]
+[ext_resource type="Script" uid="uid://cauer7nverqof" path="res://Items/item.gd" id="1_8xuw7"]
+
+[resource]
+script = ExtResource("1_8xuw7")
+item_name = "GoldOre"
+in_world_texture = ExtResource("1_2yvfx")
+state_required_to_pickup = Dictionary[String, Variant]({
+"HasStonePickaxe": true
+})
+metadata/_custom_type_script = "uid://cauer7nverqof"

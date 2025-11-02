@@ -12,7 +12,8 @@ func _ready()->void:
 	agent.init(move_controller, 
 			[SleepGoal.new(),
 			WanderGoal.new(),
-			GetStonePickaxe.new(),
+			#GetStonePickaxe.new(),
+			GetGoldGoal.new()
 			],
 			[SleepAction.new(),
 			WanderAction.new(),
@@ -20,7 +21,8 @@ func _ready()->void:
 			GetStone.new(),
 			GetStick.new(),
 			SearchStick.new(),
-			SearchStone.new()
+			SearchStone.new(),
+			GetGoldAction.new()
 			])
 			
 func _physics_process(_delta: float) -> void:
@@ -34,6 +36,9 @@ func animate(animation_name : String)->void:
 func pickup(item_pickup : PickUp)->void:
 	var item : Item = item_pickup.item_data
 	var state_name : String = "Has%s"%item.item_name
+	for required_state in item.state_required_to_pickup.keys():
+		if agent.get_state(required_state) != item.state_required_to_pickup.get(required_state):
+			return
 	if not agent.get_state(state_name, false):
 		agent.set_state(state_name, true)
 		item_pickup.queue_free()

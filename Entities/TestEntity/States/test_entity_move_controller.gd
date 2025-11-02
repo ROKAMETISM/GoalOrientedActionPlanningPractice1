@@ -58,6 +58,8 @@ func sleep(delta:float, _world_state:LocalWorld)->bool:
 	return false
 
 func wander(delta:float, _world_state:LocalWorld)->bool:
+	is_running = false
+	is_searching = false
 	if _wander_direction.length_squared() <= 1.0:
 		_wander_direction = Vector2(wander_speed, 0.0).rotated(randf_range(0, 2*PI))
 		_wander_timer = randf_range(wander_time_min, wander_time_max)
@@ -72,6 +74,7 @@ func make_stone_pickaxe(_delta:float, local_world:LocalWorld)->bool:
 		local_world.set_state("HasStone",false)
 		local_world.set_state("HasStick",false)
 		local_world.set_state("HasStonePickaxe",true)
+		Fn.LOG("\n\nMADE PICKAXE!!!\n\n")
 		return true
 	return false
 
@@ -91,6 +94,19 @@ func get_stick(_delta:float, local_world:LocalWorld)->bool:
 	relative_position = relative_position.normalized()*200
 	run_direction = relative_position
 	return local_world.get_state("HasStick",false)
+
+
+func get_gold(_delta:float, local_world:LocalWorld)->bool:
+	is_running = true
+	if not local_world.get_state("SeenGoldOre", false):
+		return false
+	if local_world.get_state("HasGoldOre", false):
+		return true
+	var seen_stick : PickUp = local_world.seen_items.get("GoldOre")[0]
+	var relative_position : Vector2 = seen_stick.global_position - parent.global_position
+	relative_position = relative_position.normalized()*200
+	run_direction = relative_position
+	return local_world.get_state("HasGoldOre",false)
 
 func search(_delta:float, local_world:LocalWorld)->bool:
 	is_searching = true

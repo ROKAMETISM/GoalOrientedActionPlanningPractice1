@@ -7,6 +7,7 @@ const PICKUP := preload("uid://6t2e6nc4cj8s")
 const STONE := preload("uid://xxjmeogmth2x")
 const STICK := preload("uid://cnsuhw8e4qaof")
 const IRON := preload("uid://pm3va3nt8rfm")
+const GOLD := preload("uid://bk286ks0moxyp")
 
 var item_types : Array[Item]
 
@@ -14,6 +15,7 @@ func _ready() -> void:
 	item_types.append(STONE)
 	item_types.append(STICK)
 	item_types.append(IRON)
+	item_types.append(GOLD)
 
 func _physics_process(delta: float) -> void:
 	
