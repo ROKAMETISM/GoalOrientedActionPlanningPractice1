@@ -13,7 +13,8 @@ func _ready()->void:
 			[SleepGoal.new(),
 			WanderGoal.new(),
 			#GetStonePickaxe.new(),
-			GetGoldGoal.new()
+			GetGoldGoal.new(),
+			StoreGoldGoal.new()
 			],
 			[SleepAction.new(),
 			WanderAction.new(),
@@ -41,7 +42,10 @@ func pickup(item_pickup : PickUp)->void:
 			return
 	if not agent.get_state(state_name, false):
 		agent.set_state(state_name, true)
+		for state_effect in item.state_effect_on_pickup.keys():
+			agent.set_state(state_effect, item.state_effect_on_pickup.get(state_effect))
 		item_pickup.queue_free()
+
 
 
 func _on_sight_area_entered(area: Area2D) -> void:

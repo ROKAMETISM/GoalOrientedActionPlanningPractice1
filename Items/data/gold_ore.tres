@@ -11,4 +11,7 @@ in_world_texture = ExtResource("1_2yvfx")
 state_required_to_pickup = Dictionary[String, Variant]({
 "HasStonePickaxe": true
 })
+state_effect_on_pickup = Dictionary[String, Variant]({
+"HasStonePickaxe": false
+})
 metadata/_custom_type_script = "uid://cauer7nverqof"
