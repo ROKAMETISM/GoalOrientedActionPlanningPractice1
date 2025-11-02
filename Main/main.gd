@@ -22,8 +22,8 @@ func _physics_process(delta: float) -> void:
 	
 	spawn_timer -= delta
 	if spawn_timer < 0:
-		spawn_timer += 1.0
+		spawn_timer += 2.0
 		var new_pickup : PickUp= PICKUP.instantiate()
 		new_pickup.item_data = item_types.pick_random()
-		new_pickup.global_position = Fn.randv2_range(Vector2(16, 16), get_viewport().size-Vector2i(16, 16))
+		new_pickup.global_position = Fn.randv2_range(Vector2(32, 32), get_viewport().size-Vector2i(32, 32))
 		add_child(new_pickup)
