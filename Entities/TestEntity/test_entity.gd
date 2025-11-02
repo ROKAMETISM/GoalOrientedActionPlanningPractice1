@@ -23,7 +23,9 @@ func _ready()->void:
 			GetStick.new(),
 			SearchStick.new(),
 			SearchStone.new(),
-			GetGoldAction.new()
+			GetGoldAction.new(),
+			GoToBox.new(),
+			StoreGoldToBox.new(),
 			])
 			
 func _physics_process(_delta: float) -> void:

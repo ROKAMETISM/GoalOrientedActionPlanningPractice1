@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://by5naupk0kx1p"]
+[gd_scene load_steps=8 format=3 uid="uid://by5naupk0kx1p"]
 
+[ext_resource type="Script" uid="uid://bdrhvrmkx33e4" path="res://GameObjects/Box/box.gd" id="1_1wkei"]
 [ext_resource type="Texture2D" uid="uid://dujm6rmi8lqfl" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Outdoor decoration/Chest.png" id="1_3kj0f"]
 [ext_resource type="Script" uid="uid://chb00isumw5nn" path="res://GameObjects/Box/area_2d.gd" id="2_wtmtl"]
+[ext_resource type="Texture2D" uid="uid://dk1w00vg7wm6y" path="res://Assets/Sprites/sprite_gold_ore.png" id="4_wr6f2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l5cap"]
 size = Vector2(64, 64)
@@ -9,7 +11,13 @@ size = Vector2(64, 64)
 [sub_resource type="CircleShape2D" id="CircleShape2D_3kj0f"]
 radius = 64.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_6n5la"]
+font_size = 12
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Box" type="StaticBody2D"]
+script = ExtResource("1_1wkei")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(4, 4)
@@ -25,6 +33,25 @@ script = ExtResource("2_wtmtl")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_3kj0f")
 debug_color = Color(0.6048572, 0.53412735, 0.25947952, 0.41960785)
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(64, 0)
+scale = Vector2(4, 4)
+texture = ExtResource("4_wr6f2")
+
+[node name="Label" type="Label" parent="Sprite2D2"]
+unique_name_in_owner = true
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 8.0
+offset_top = -19.5
+offset_right = 46.75
+offset_bottom = 3.5
+grow_vertical = 2
+text = "Gold:"
+label_settings = SubResource("LabelSettings_6n5la")
+vertical_alignment = 1
 
 [connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]
 [connection signal="body_exited" from="Area2D" to="Area2D" method="_on_body_exited"]
