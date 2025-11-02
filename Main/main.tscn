@@ -17,10 +17,6 @@ position = Vector2(317, 180)
 position = Vector2(870, 430)
 item_data = ExtResource("4_k3v36")
 
-[node name="Pickup2" parent="." instance=ExtResource("3_eunhr")]
-position = Vector2(785, 235)
-item_data = ExtResource("5_liyct")
-
 [node name="Pickup3" parent="." instance=ExtResource("3_eunhr")]
 position = Vector2(269, 387)
 item_data = ExtResource("4_k3v36")
@@ -31,4 +27,24 @@ item_data = ExtResource("5_k3v36")
 
 [node name="Pickup5" parent="." instance=ExtResource("3_eunhr")]
 position = Vector2(290, 495)
+item_data = ExtResource("5_k3v36")
+
+[node name="Pickup6" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(421, 351)
+item_data = ExtResource("5_k3v36")
+
+[node name="Pickup7" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(468, 274)
+item_data = ExtResource("4_k3v36")
+
+[node name="Pickup8" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(672, 355)
+item_data = ExtResource("5_liyct")
+
+[node name="Pickup9" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(567, 222)
+item_data = ExtResource("4_k3v36")
+
+[node name="Pickup10" parent="." instance=ExtResource("3_eunhr")]
+position = Vector2(901, 308)
 item_data = ExtResource("5_k3v36")

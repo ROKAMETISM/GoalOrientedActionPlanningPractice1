@@ -24,7 +24,7 @@ func _find_best_plan(desired_state : Dictionary, local_world : LocalWorld)->Plan
   # In case it doesn't find a valid path, it will return false.
 	if _build_plan_tree(root, local_world):
 		root.print_tree()
-		var plans = _transform_tree_into_array(root, local_world)
+		var plans : Array[Plan]= _transform_tree_into_array(root, local_world)
 		return _get_cheapest_plan(plans)
 	return Plan.new()
 
@@ -33,11 +33,11 @@ func _find_best_plan(desired_state : Dictionary, local_world : LocalWorld)->Plan
 # Compares plan's cost and returns
 # actions included in the cheapest one.
 #
-func _get_cheapest_plan(plans)->Plan:
+func _get_cheapest_plan(plans : Array[Plan])->Plan:
 	var best_plan : Plan = null
-	for plan in plans:
+	for plan : Plan in plans:
 		_print_plan(plan)
-		if best_plan == null or plan.cost < best_plan.cost:
+		if best_plan == null or plan.get_cost() < best_plan.get_cost():
 			best_plan = plan
 	return best_plan
 
@@ -122,7 +122,7 @@ func _transform_tree_into_array(root:PlanNode, local_world : LocalWorld) -> Arra
 	if root.get_children().size() == 0:
 		var plan = Plan.new() 
 		if action:
-			plan.init([action], [action.get_cost(local_world._state)])
+			plan.init([action], [action.get_cost(local_world.get_states())])
 		plans.append(plan)
 		return plans
 	var child_nodes := root.get_children()
@@ -133,7 +133,7 @@ func _transform_tree_into_array(root:PlanNode, local_world : LocalWorld) -> Arra
 			if action == null:
 				continue
 			if action.has_method("get_cost"):
-				child_plan.append(action, action.get_cost(local_world._state))
+				child_plan.append(action, action.get_cost(local_world.get_states()))
 	return plans
 
 

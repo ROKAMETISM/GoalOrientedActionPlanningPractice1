@@ -11,9 +11,17 @@ func _ready()->void:
 	move_controller.init(self, move_fsm)
 	agent.init(move_controller, 
 			[SleepGoal.new(),
-			WanderGoal.new()],
+			WanderGoal.new(),
+			GetStonePickaxe.new(),
+			],
 			[SleepAction.new(),
-			WanderAction.new()])
+			WanderAction.new(),
+			MakeStonePickaxe.new(),
+			GetStone.new(),
+			GetStick.new(),
+			SearchStick.new(),
+			SearchStone.new()
+			])
 			
 func _physics_process(_delta: float) -> void:
 	global_position = global_position.posmodv(get_viewport().size)
@@ -22,3 +30,15 @@ func _physics_process(_delta: float) -> void:
 func animate(animation_name : String)->void:
 	if sprite.animation != animation_name:
 		sprite.play(animation_name)
+
+func pickup(item_pickup : PickUp)->void:
+	var item : Item = item_pickup.item_data
+	var state_name : String = "Has%s"%item.item_name
+	if not agent.get_state(state_name, false):
+		agent.set_state(state_name, true)
+		item_pickup.queue_free()
+
+
+func _on_sight_area_entered(area: Area2D) -> void:
+	var item_pickup = area as PickUp
+	agent.see_item(item_pickup)

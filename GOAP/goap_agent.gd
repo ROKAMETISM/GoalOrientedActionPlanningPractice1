@@ -36,6 +36,13 @@ func set_state(state_name:String, value)->void:
 func get_state(state_name:String, default:Variant=null)->Variant:
 	return _local_world.get_state(state_name, default)
 
+func see_item(item_pickup:PickUp)->void:
+	var item_array = _local_world.seen_items.get(item_pickup.item_data.item_name)
+	if not item_array:
+		_local_world.seen_items.set(item_pickup.item_data.item_name, [])
+		item_array = _local_world.seen_items.get(item_pickup.item_data.item_name)
+	item_array.append(item_pickup)
+
 #
 # Returns the highest priosrity goal available.
 #

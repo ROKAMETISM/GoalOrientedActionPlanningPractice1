@@ -1,6 +1,13 @@
 # goal-oriented-action-planning-practice-1
 Simple project for practicing implementation of GOAP(Goal Oriented Action Planning) by making AI Agents based on GOAP in 2D Topdown style game.
 
+
+##Todo
+
+New GOAP system where WorldState is not just a dictionary of booleans, but a complex database that includes inventory.
+
+New Planner must account for the more complex WorldState and Actions.
+
 ##References
 
 https://www.diva-portal.org/smash/get/diva2:1972169/FULLTEXT01.pdf

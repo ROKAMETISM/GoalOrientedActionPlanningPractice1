@@ -40,6 +40,9 @@ animation = &"MoveSide"
 [node name="TestEntityMovecontroller" type="Node" parent="Controller"]
 unique_name_in_owner = true
 script = ExtResource("3_esaxb")
+sleep_time = null
+wander_time_min = null
+wander_time_max = null
 wander_speed = 120.0
 metadata/_custom_type_script = "uid://bcycbct07epaw"
 

@@ -3,13 +3,15 @@
 [ext_resource type="Script" uid="uid://bnx5dgf1oyo11" path="res://Items/pickup.gd" id="1_xevvu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xevvu"]
-radius = 16.0
+radius = 24.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_xevvu"]
 font_size = 10
 shadow_color = Color(0, 0, 0, 1)
 
 [node name="Pickup" type="Area2D"]
+collision_layer = 32
+collision_mask = 64
 script = ExtResource("1_xevvu")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -31,3 +33,5 @@ text = "text"
 label_settings = SubResource("LabelSettings_xevvu")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
