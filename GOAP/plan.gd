@@ -6,7 +6,10 @@ var _current_step := 0
 func is_empty() -> bool:
 	return _actions.is_empty()
 func get_current_action() -> Action:
-	return _actions[_current_step]
+	if _current_step < _actions.size():
+		return _actions[_current_step]
+	else:
+		return null
 func get_action(index : int)->Action:
 	return _actions[index]
 func get_actions()->Array[Action]:
@@ -23,7 +26,13 @@ func init(actions:Array[Action], costs:Array[int])->void:
 		_actions.append(actions[i])
 		_cost += costs[i]
 	_current_step = 0
-
+func str_actions()->String:
+	var return_string := "["
+	for action in _actions:
+		return_string += action.action_name()
+		return_string += ", "
+	return_string += "]"
+	return return_string
 #
 # Executes plan. This function is called on every game loop.
 # "plan" is the current list of actions, and delta is the time since last loop.

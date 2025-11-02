@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cw85fxnssrgap"]
+[gd_scene load_steps=11 format=3 uid="uid://cw85fxnssrgap"]
 
 [ext_resource type="SpriteFrames" uid="uid://cxqpjdhx4m6hb" path="res://Assets/Cute_Fantasy_Free/Cute_Fantasy_Free/Enemies/skeleton_sprite_frames.tres" id="1_gw6qf"]
 [ext_resource type="Script" uid="uid://dkicb0t4qrgwv" path="res://Entities/TestEntity/test_entity.gd" id="1_vwajm"]
@@ -7,10 +7,15 @@
 [ext_resource type="Script" uid="uid://dej5lex55tui1" path="res://Entities/TestEntity/States/test_entity_move.gd" id="3_4nsly"]
 [ext_resource type="Script" uid="uid://bcycbct07epaw" path="res://Entities/TestEntity/States/test_entity_move_controller.gd" id="3_esaxb"]
 [ext_resource type="Script" uid="uid://d35mg00bfewvp" path="res://GOAP/goap_agent.gd" id="4_liuuo"]
+[ext_resource type="Script" uid="uid://b1g2p0w7aia4m" path="res://Entities/TestEntity/goap_text.gd" id="8_1dhr2"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0qq3k"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_liuuo"]
+font_size = 12
+font_color = Color(0, 1, 0, 1)
+outline_size = 1
+outline_color = Color(0, 0, 0, 1)
 
 [node name="TestEntity" type="CharacterBody2D"]
 motion_mode = 1
@@ -53,7 +58,7 @@ script = ExtResource("3_4nsly")
 idle_state = NodePath("../TestEntityIDLE")
 metadata/_custom_type_script = "uid://dej5lex55tui1"
 
-[node name="Label" type="Label" parent="."]
+[node name="GOAPText" type="Label" parent="."]
 unique_name_in_owner = true
 anchors_preset = 8
 anchor_left = 0.5
@@ -69,4 +74,5 @@ grow_vertical = 2
 text = "text"
 label_settings = SubResource("LabelSettings_liuuo")
 horizontal_alignment = 1
-vertical_alignment = 1
+vertical_alignment = 2
+script = ExtResource("8_1dhr2")

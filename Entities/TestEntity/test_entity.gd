@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var move_controller : TestEntityMovecontroller = %TestEntityMovecontroller
 @onready var agent : GOAPAgent = %GOAPAgent
 @onready var sprite : AnimatedSprite2D = %AnimatedSprite2D
+@onready var goap_text : Label = %GOAPText
 
 func _ready()->void:
 	move_fsm.init(self, [move_controller])
@@ -17,6 +18,7 @@ func _ready()->void:
 			
 func _physics_process(_delta: float) -> void:
 	global_position = global_position.posmodv(get_viewport().size)
+	goap_text.visualize_agent(agent)
 
 func _on_move_fsm_state_updated(states : Array[State])->void:
 	for state in states:

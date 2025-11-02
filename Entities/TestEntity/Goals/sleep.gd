@@ -6,7 +6,7 @@ func is_valid(local_world:LocalWorld) -> bool:
 
 
 func priority(local_world:LocalWorld) -> int:
-	return floori(local_world.get_state("TimeSinceLastSlept", 0.0) - 5)
+	return floori(local_world.get_state("TimeSinceLastSlept", 0.0) - 10)
 
 
 func get_desired_state() -> Dictionary:
