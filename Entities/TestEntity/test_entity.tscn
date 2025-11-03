@@ -75,6 +75,7 @@ debug_color = Color(0.8833796, 0.25132796, 0.5649178, 0.41960785)
 
 [node name="GOAPText" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 top_level = true
 offset_right = 40.0
 offset_bottom = 23.0

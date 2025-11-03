@@ -12,3 +12,6 @@ position = Vector2(637, 357)
 
 [node name="Box" parent="." instance=ExtResource("3_qvhan")]
 position = Vector2(142, 621)
+
+[node name="TestEntity2" parent="." instance=ExtResource("2_2w1kt")]
+position = Vector2(284, 281)
