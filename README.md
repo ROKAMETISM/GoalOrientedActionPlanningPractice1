@@ -8,6 +8,8 @@ New GOAP system where WorldState is not just a dictionary of booleans, but a com
 
 New Planner must account for the more complex WorldState and Actions.
 
+Action Preconditions and effects, Goal desired states are defined as Callables.
+
 ##References
 
 https://www.diva-portal.org/smash/get/diva2:1972169/FULLTEXT01.pdf
